@@ -40,7 +40,8 @@ export default {
         if (valid) {
           postKeyValueRequest('/doLogin',this.loginForm).then(resp=>{
             if(resp){
-              alert(JSON.stringify(resp))
+              window.sessionStorage.setItem("user",JSON.stringify(resp.obj))
+              this.$router.replace('/home')
             }
           })
         } else {
