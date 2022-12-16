@@ -17,15 +17,15 @@
 </template>
 
 <script>
-import {postKeyValueRequest} from "@/utils/api";
+
 
 export default {
   name: "Login",
   data(){
     return{
       loginForm:{
-        username: 'admin',
-        password: '123'
+        username: '',
+        password: ''
       },
       checked:true,
       rules:{
@@ -38,7 +38,7 @@ export default {
     submitLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          postKeyValueRequest('/doLogin',this.loginForm).then(resp=>{
+          this.postKeyValueRequest('/doLogin',this.loginForm).then(resp=>{
             if(resp){
               window.sessionStorage.setItem("user",JSON.stringify(resp.obj))
               this.$router.replace('/home')
