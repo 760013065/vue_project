@@ -1,8 +1,10 @@
 <template>
+
+
 <div>
   <el-container>
     <el-header class="homeHeader">
-      <div class="title">
+      <div class="title" @click="toHome">
         IEmployee
       </div>
       <el-dropdown class="userInfo" @command="commandHandler">
@@ -20,12 +22,12 @@
 
     </el-header>
     <el-container>
-      <el-aside width="200px">
-        <el-menu @select="menuSelect">
-          <el-submenu index="1" v-for="(item,index) in this.$router.options.routes" v-if="!item.hidden" :key="index">
+      <el-aside width="260px">
+        <el-menu router>
+          <el-submenu :index="index+''" v-for="(item,index) in this.$router.options.routes" v-if="!item.hidden" :key="index">
             <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>{{ item.name }}</span>
+              <i :class="item.icon"></i>
+              <span style="font-size: 15px">{{ item.name }}</span>
             </template>
 
               <el-menu-item :index="child.path" v-for="(child,indexj) in item.children" :key="indexj">
@@ -37,15 +39,29 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <router-view/>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
+          <el-breadcrumb-item v-if="this.$router.currentRoute.name!='Home'">{{this.$router.currentRoute.name}}</el-breadcrumb-item>
+
+        </el-breadcrumb>
+        <div style="text-align: center;font-size: 30px;color: #409eff;padding-top: 80px" v-if="this.$router.currentRoute.name=='Home'" >
+          Welcome to the system!
+        </div>
+
+        <router-view class="homeRouterView"/>
       </el-main>
+
     </el-container>
   </el-container>
 </div>
 </template>
 
 <script>
+
 export default {
+  components:{
+
+  },
   name: "Home",
   data(){
     return{
@@ -53,9 +69,10 @@ export default {
     }
   },
   methods:{
-    menuSelect(index){
-      this.$router.push(index);
+    toHome:function (){
+      this.$router.replace('/home')
     },
+
     commandHandler(cmd){
       if(cmd=='logout'){
         this.$confirm('You will log out, whether to continue?', 'Prompt', {
@@ -79,6 +96,7 @@ export default {
 </script>
 
 <style >
+
 .homeHeader{
   background-color: #409eff;
   display: flex;
@@ -106,5 +124,12 @@ export default {
   align-items: center;
 }
 
+.homeRouterView{
+  margin-top: 20px;
+}
+
+
+
 
 </style>
+
